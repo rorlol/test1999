@@ -16,3 +16,8 @@ router.register(r'reviews',ReviewsViewSet,basename='reviews')
 router.register(r'cart',CartViewSet,basename='cart')
 router.register(r'cart_item',CartItemViewSet,basename='cart_item')
 router.register(r'favorite',FavoriteViewSet,basename='favorite')
+
+
+urlpatterns = [
+    path('', include(router.urls))
+]
