@@ -12,10 +12,15 @@ class Category(models.Model):
     category_name = models.CharField(max_length=100, unique=True)
     category_image = models.ImageField()
 
+    def __str__(self):
+        return self.category_name
 
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     subcategory_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.subcategory_name
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -34,7 +39,7 @@ class Product(models.Model):
     )
     choose_table = models.CharField(max_length=3, choices=size_table_choices)
     description = models.TextField()
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE,null=True,blank=True)
 
 class ImageProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -45,9 +50,12 @@ class Reviews(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     comment = models.TextField()
     stars = models.PositiveIntegerField(choices=[(i,str(i))for i in range(1,6)])
-    image = models.ImageField()
-    video = models.FileField()
+    image = models.ImageField(null=True,blank=True)
+    video = models.FileField(null=True,blank=True)
     created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} | {self.product}'
 
 class Cart(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)

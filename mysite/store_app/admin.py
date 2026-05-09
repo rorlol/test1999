@@ -11,3 +11,4 @@ admin.site.register(Reviews)
 admin.site.register(Cart)
 admin.site.register(CartItem)
 admin.site.register(Favorite)
+
