@@ -11,7 +11,7 @@ class UserProfileSerializers(serializers.ModelSerializer):
 class CategorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id','category_name','category_image']
 
 class SubCategorySerializers(serializers.ModelSerializer):
     class Meta:
