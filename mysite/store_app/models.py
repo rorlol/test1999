@@ -24,7 +24,7 @@ class SubCategory(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=100)
     product_video = models.FileField()
     product_image = models.ImageField()
@@ -42,7 +42,7 @@ class Product(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE,null=True,blank=True)
 
 class ImageProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images_product')
     image = models.ImageField()
 
 class Reviews(models.Model):
