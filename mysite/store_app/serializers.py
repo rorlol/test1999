@@ -34,7 +34,7 @@ class ProductListSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id','product_name',
-                  'product_image','price','owner',]
+                  'product_image','price','owner']
 
 class ReviewsSerializers(serializers.ModelSerializer):
     user = UserProfileSerializers()

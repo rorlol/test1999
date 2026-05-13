@@ -3,7 +3,9 @@ from .models import UserProfile,Category,SubCategory,Product,ImageProduct,Review
 from .serializers import (UserProfileSerializers,CategorySerializers,SubCategorySerializers,
                           ProductListSerializers,ProductDetailSerializers,ImageProductSerializers,
                           ReviewsSerializers,CartSerializers,CartItemSerializers,FavoriteSerializers)
-
+from rest_framework.filters import SearchFilter,OrderingFilter
+from .filter import ProductFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -20,6 +22,10 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
 class ProductListViewSet(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializers
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+    search_fields = ['product_name', 'price']
+    ordering_fields = ['price']
+    filterset_class = ProductFilter
 
 class ProductDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
@@ -32,6 +38,8 @@ class ImageProductViewSet(viewsets.ModelViewSet):
 class ReviewsViewSet(viewsets.ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializers
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['created_at']
 
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
