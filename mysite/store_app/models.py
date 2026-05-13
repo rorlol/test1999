@@ -47,7 +47,7 @@ class ImageProduct(models.Model):
 
 class Reviews(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     comment = models.TextField()
     stars = models.PositiveIntegerField(choices=[(i,str(i))for i in range(1,6)])
     image = models.ImageField(null=True,blank=True)

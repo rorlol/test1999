@@ -36,21 +36,30 @@ class ProductListSerializers(serializers.ModelSerializer):
         fields = ['id','product_name',
                   'product_image','price','owner',]
 
+class ReviewsSerializers(serializers.ModelSerializer):
+    user = UserProfileSerializers()
+    product = ProductListSerializers()
+    class Meta:
+        model = Reviews
+        fields = ['id','user','product','stars','comment','image','video','created_at']
+
+class ReviewsSimpleSerializers(serializers.ModelSerializer):
+    user = UserProfileSerializers()
+    class Meta:
+        model = Reviews
+        fields = ['id','user','product','stars','comment','image','video','created_at']
+
 class ProductDetailSerializers(serializers.ModelSerializer):
     category = CategorySerializers()
     sub_category = SubCategorySimpleSerializers()
     owner = UserProfileSerializers()
     images_product = ImageProductSerializers(read_only=True, many=True)
+    reviews = ReviewsSimpleSerializers(read_only=True, many=True)
     class Meta:
         model = Product
         fields = ['id','category','sub_category','product_name','description',
                   'product_image','product_video','price','choose_table','owner',
-                  'images_product']
-
-class ReviewsSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Reviews
-        fields = '__all__'
+                  'images_product','reviews']
 
 class CartSerializers(serializers.ModelSerializer):
     class Meta:
