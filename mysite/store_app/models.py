@@ -1,10 +1,8 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-class UserProfile(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    username = models.CharField(max_length=100, unique=True)
+class UserProfile(AbstractUser):
     age = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(16), MaxValueValidator(80)])
     profile_image = models.ImageField()
 
