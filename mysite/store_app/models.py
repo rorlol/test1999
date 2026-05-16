@@ -39,6 +39,18 @@ class Product(models.Model):
     description = models.TextField()
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE,null=True,blank=True)
 
+    def get_avg_rating(self):
+        reviews = self.reviews.all()
+        if reviews.exists():
+            return sum([i.stars for i in reviews]) / reviews.count()
+        return 0
+
+    def get_count_rating(self):
+        reviews = self.reviews.all()
+        if reviews.exists():
+            return reviews.count()
+        return 0
+
 class ImageProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images_product')
     image = models.ImageField()
