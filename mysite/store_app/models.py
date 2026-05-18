@@ -39,6 +39,9 @@ class Product(models.Model):
     description = models.TextField()
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE,null=True,blank=True)
 
+    def __str__(self):
+        return self.product_name
+
     def get_avg_rating(self):
         reviews = self.reviews.all()
         if reviews.exists():

@@ -6,6 +6,10 @@ from .views import (UserProfileViewSet,CategoryViewSet,SubCategoryViewSet,Produc
                     ProductDetailViewSet,ImageProductViewSet,ReviewsViewSet,CartViewSet,
                     CartItemViewSet,FavoriteViewSet)
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 router = routers.DefaultRouter()
 
@@ -22,5 +26,5 @@ router.register(r'favorite',FavoriteViewSet,basename='favorite')
 urlpatterns = [
     path('', include(router.urls)),
     path('product/', ProductListViewSet.as_view(), name='product_list'),
-    path('product/<int:pk>/', ProductDetailViewSet.as_view(), name='product_detail')
+    path('product/<int:pk>/', ProductDetailViewSet.as_view(), name='product_detail'),
 ]
