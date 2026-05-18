@@ -6,7 +6,7 @@ from .serializers import (UserProfileSerializers,CategorySerializers,SubCategory
 from rest_framework.filters import SearchFilter,OrderingFilter
 from .filter import ProductFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from .permissions import CheckOwner
+from .permissions import CheckOwner,CheckOwnerReview
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
@@ -47,7 +47,7 @@ class ReviewsViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewsSerializers
     filter_backends = [OrderingFilter]
     ordering_fields = ['created_at']
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,CheckOwnerReview]
 
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
