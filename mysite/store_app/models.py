@@ -1,9 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from phonenumber_field.modelfields import PhoneNumberField
 
 class UserProfile(AbstractUser):
     age = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(16), MaxValueValidator(80)])
+
+    phone_number = PhoneNumberField(region='KG', default='+996')
     profile_image = models.ImageField()
 
 class Category(models.Model):

@@ -4,12 +4,7 @@ from django.urls import path,include
 from rest_framework import routers
 from .views import (UserProfileViewSet,CategoryViewSet,SubCategoryViewSet,ProductListViewSet,
                     ProductDetailViewSet,ImageProductViewSet,ReviewsViewSet,CartViewSet,
-                    CartItemViewSet,FavoriteViewSet)
-
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+                    CartItemViewSet,FavoriteViewSet,RegisterView,CustomLoginView,LogoutView)
 
 router = routers.DefaultRouter()
 
@@ -25,6 +20,11 @@ router.register(r'favorite',FavoriteViewSet,basename='favorite')
 
 urlpatterns = [
     path('', include(router.urls)),
+
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+
     path('product/', ProductListViewSet.as_view(), name='product_list'),
     path('product/<int:pk>/', ProductDetailViewSet.as_view(), name='product_detail'),
 ]

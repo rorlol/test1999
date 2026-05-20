@@ -4,11 +4,11 @@ from .models import UserProfile,Category,SubCategory,Product,ImageProduct,Review
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 
-class UserProfileSerializers(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['username', 'email', 'password', 'first_name', 'last_name', 'age',
-                  'phone_number', 'status']
+                  'phone_number']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -36,6 +36,11 @@ class LoginSerializer(serializers.Serializer):
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         }
+
+class UserProfileSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['id','username']
 
 class CategorySerializers(serializers.ModelSerializer):
     class Meta:
