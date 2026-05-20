@@ -3,11 +3,20 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
 
+
+USER_STATUS = (
+('gold','gold'),
+('silver','silver'),
+('bronze','bronze'),
+('simple','simple')
+)
+
 class UserProfile(AbstractUser):
     age = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(16), MaxValueValidator(80)])
 
     phone_number = PhoneNumberField(region='KG', default='+996')
-    profile_image = models.ImageField()
+    profile_image = models.ImageField(null=True,blank=True)
+    status = models.CharField(max_length=100,choices=USER_STATUS, default='simple')
 
 class Category(models.Model):
     category_name = models.CharField(max_length=100, unique=True)
@@ -78,7 +87,18 @@ class Cart(models.Model):
 
     def get_all_sum_product(self):
         items = self.items.all()
-        return sum([i.get_sum_product() for i in items])
+        all_sum =  sum([i.get_sum_product() for i in items])
+        discount = 0
+        if self.user.status == 'gold':
+            discount = 0.70
+        elif self.user.status == 'silver':
+            discount = 0.50
+        elif self.user.status == 'bronze':
+            discount = 0.25
+
+        finally_sum = all_sum * (1 - discount)
+        return f'old sum: {all_sum}, discount:{round(100 * discount)}%, finally sum: {finally_sum}'
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE,related_name='items')
