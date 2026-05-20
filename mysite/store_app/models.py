@@ -76,10 +76,17 @@ class Reviews(models.Model):
 class Cart(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
 
+    def get_all_sum_product(self):
+        items = self.items.all()
+        return sum([i.get_sum_product() for i in items])
+
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE,related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1)
+
+    def get_sum_product(self):
+        return self.product.price * self.quantity
 
 class Favorite(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

@@ -102,15 +102,34 @@ class ProductDetailSerializers(serializers.ModelSerializer):
     def get_count_rating(self,obj):
         return obj.get_count_rating
 
-class CartSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Cart
-        fields = '__all__'
-
 class CartItemSerializers(serializers.ModelSerializer):
+
+
     class Meta:
         model = CartItem
-        fields = '__all__'
+        fields = ['id','product','quantity']
+
+class CartItemSimpleSerializers(serializers.ModelSerializer):
+    product = ProductListSerializers()
+    get_sum_product = serializers.SerializerMethodField()
+    class Meta:
+        model = CartItem
+        fields = ['id','product','quantity','get_sum_product']
+
+    def get_sum_product(self,obj):
+        return obj.get_sum_product
+
+class CartSerializers(serializers.ModelSerializer):
+    items = CartItemSimpleSerializers(read_only=True,many=True)
+    user = UserProfileSerializers()
+    get_all_sum_product = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Cart
+        fields = ['id','user','items','get_all_sum_product']
+
+    def get_all_sum_product(self,obj):
+        return obj.get_all_sum_produc()
 
 class FavoriteSerializers(serializers.ModelSerializer):
     class Meta:

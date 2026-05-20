@@ -51,9 +51,11 @@ class LogoutView(generics.GenericAPIView):
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializers
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(id=self.request.user.id)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -94,17 +96,24 @@ class ReviewsViewSet(viewsets.ModelViewSet):
     pagination_class = ReviewsPagination
 
 class CartViewSet(viewsets.ModelViewSet):
-    queryset = Cart.objects.all()
     serializer_class = CartSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        serializer = self.get_serializer(cart)
+        return Response(serializer.data)
 
 class CartItemViewSet(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class FavoriteViewSet(viewsets.ModelViewSet):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
