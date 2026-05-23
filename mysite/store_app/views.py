@@ -95,7 +95,7 @@ class ReviewsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,CheckOwnerReview]
     pagination_class = ReviewsPagination
 
-class CartViewSet(viewsets.ModelViewSet):
+class CartViewSet(generics.RetrieveAPIView):
     serializer_class = CartSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -110,7 +110,14 @@ class CartViewSet(viewsets.ModelViewSet):
 class CartItemViewSet(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializers
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return CartItem.objects.filter(cart__user=self.request.user)
+
+    def perform_create(self, serializer):
+        cart, created = Cart.objects.get_or_create(user=self.request.user)
+        serializer.save(cart=cart)
 
 
 class FavoriteViewSet(viewsets.ModelViewSet):

@@ -103,8 +103,6 @@ class ProductDetailSerializers(serializers.ModelSerializer):
         return obj.get_count_rating
 
 class CartItemSerializers(serializers.ModelSerializer):
-
-
     class Meta:
         model = CartItem
         fields = ['id','product','quantity']
@@ -135,3 +133,4 @@ class FavoriteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = '__all__'
+
